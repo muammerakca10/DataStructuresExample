@@ -84,5 +84,20 @@ int main(){
     
     stack *s1 = tanimla();
     stack *s2 = tanimla();
+/*
+    for(int i = 0; i<10;i++){
+        push(i*10, s1);
+    }
+    printf("10 eleman s1'e push edildikten sonra:\n");
+    yazdir(s1);
+    
+    for(int i = 0; i<8; i++){
+        push(pop(s1),s2);
+    }
+    printf("s1'den s2'ye aktarma isleminden sonra s1:\n");
+    yazdir(s1);
+    printf("s1'den s2'ye aktarma isleminden sonra s2:\n");
+    yazdir(s2);
+*/
 
 }
