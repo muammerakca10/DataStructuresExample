@@ -8,13 +8,14 @@
 #include "211220090_odev2.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 
 struct s {
     int boyut;
     int tepe;
-    int *dizi;
+    char *dizi[10];
 } ;
 
 typedef struct s stack;
@@ -71,17 +72,17 @@ void yazdir(stack *s){
     printf("Tepe : %d\n", s->tepe);
     printf("Boyut : %d\n", s->boyut);
     for(int i = 0; i<s->tepe;i++){
-        printf("%d\t",s->dizi[i]);
+        printf("%d,",s->dizi[i]);
     }
+    printf("\n");
 }
 
-
 int main(){
+    char text[30];
+    printf("Enter String\n");
+    
+    
     stack *s1 = tanimla();
     stack *s2 = tanimla();
-    
-    for(int i = 0; i<10;i++){
-        push(i*10, s1);
-    }
-    yazdir(s1);
+
 }
