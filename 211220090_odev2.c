@@ -9,80 +9,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int *dizi = NULL;
-int boyut = 2;
-int tepe =0;
 
-int pop(){
-    if(tepe <= boyut/4){
+
+struct s {
+    int boyut;
+    int tepe;
+    int *dizi;
+} ;
+
+typedef struct s stack;
+
+
+stack* tanimla(){
+    stack *s = (stack*)malloc(sizeof(stack));
+    s->boyut = 2;
+    s-> tepe = 0;
+    s->dizi = NULL;
+    return s;
+}
+
+
+
+int pop(stack *s){
+    if(s->tepe <= 0 || s->dizi == NULL){
+        printf("Dizi bos, pop islemi yapilamaz. Hata kodu -1");
+        return -1;
+    }
+    
+    if(s->tepe <= s->boyut/4){
+        
         // Diziden pop islemi yapinca, eger dizinin eleman sayisi dizinin boyutunun 4te 1ine dusmusse; hafiza tasarrufu yapmak icin diziyi, dizinin yarisi  uzunlukta bir diziye aktarip eski uzun diziyi siliyoruz.
-        int *dizi2 = (int*)malloc(sizeof(int) *(boyut/2));
-        for(int i = 0; i<boyut; i++){
-            dizi2[i] = dizi[i];
+        int *sYeni = (int*)malloc(sizeof(int) *(s->boyut/2));
+        for(int i = 0; i<s->tepe; i++){
+            sYeni[i] = s->dizi[i];
         }
-        free(dizi);
-        dizi = dizi2;
-        boyut /= 2;
+        free(s->dizi);
+        s->dizi = sYeni;
+        s->boyut /= 2;
     }
-    return dizi[--tepe];
+    return s->dizi[--(s->tepe)];
 }
 
-void push(int a){
-    
-    if (tepe >= boyut){
+void push(int a, stack *s){
+    if(s->dizi == NULL){
+        s->dizi = (int*)malloc(sizeof(int)*2);
+    }
+    if (s->tepe >= s->boyut-1){
         //Diziye push islemi yapinca, eger dizi dolduysa; diziyi, dizinin 2 kati uzunlukta bir diziye aktarip, eski kisa diziyi hafizada bosu bosuna yer kaplamamasi icin siliyoruz.
-        int *dizi2 = (int*)malloc(sizeof(int)*boyut*2);
-        for (int i = 0; i<boyut; i++){
-            dizi2[i] = dizi[i];
+        int *sYeni = (int*)malloc(sizeof(int)*(s->boyut*2));
+        for (int i = 0; i<s->boyut; i++){
+            sYeni[i] = s->dizi[i];
         }
-        free(dizi);
-        dizi = dizi2;
-        boyut *= 2;
+        free(s->dizi);
+        s->dizi = sYeni;
+        s->boyut *= 2;
     }
-        dizi[tepe++] = a;
-    
+    s->dizi[s->tepe++] = a;
 }
 
-void yazdir(){
-    for(int i = 0; i<tepe;i++){
-        printf("%d\t",dizi[i]);
+void yazdir(stack *s){
+    printf("Tepe : %d\n", s->tepe);
+    printf("Boyut : %d\n", s->boyut);
+    for(int i = 0; i<s->tepe;i++){
+        printf("%d\t",s->dizi[i]);
     }
 }
 
 
 int main(){
-    dizi = (int*)malloc(sizeof(int)*2);
-    printf("boyut : %d\n",boyut);
-    push(10);
-    yazdir();
-    printf("boyut : %d\n",boyut);
-    push(20);
-    yazdir();
-    printf("boyut : %d\n",boyut);
-    push(30);
-    yazdir();
-    printf("boyut : %d\n",boyut);
-    push(40);
-    yazdir();
-    printf("boyut : %d\n",boyut);
-    push(50);
-    yazdir();
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    printf("\npopped %d\n",pop());
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    printf("\npopped %d\n",pop());
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    printf("\npopped %d\n",pop());
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    printf("\npopped %d\n",pop());
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    printf("\npopped %d\n",pop());
-    printf("boyut : %d\n",boyut);
-    yazdir();
-    //printf("popped %d\n",pop());
+    stack *s1 = tanimla();
+    stack *s2 = tanimla();
+    
+    for(int i = 0; i<10;i++){
+        push(i*10, s1);
+    }
+    yazdir(s1);
 }
